@@ -53,5 +53,7 @@ public interface DishService {
      * @param categoryId
      * @return
      */
-    List<Dish> getByCategoryId(Long categoryId);
+    List<Dish> list(Long categoryId);
+
+
 }

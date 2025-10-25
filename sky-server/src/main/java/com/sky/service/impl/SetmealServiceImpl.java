@@ -112,8 +112,6 @@ public class SetmealServiceImpl implements SetmealService {
     public void updateWithSetmealdishes(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
-        //修改套餐，设为停售
-        setmeal.setStatus(StatusConstant.DISABLE);
         //更新
         setmealMapper.update(setmeal);
 
