@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.Dish;
@@ -87,4 +88,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void cleanShoppingCart() {
         shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
     }
+
+    /**
+     * 删除购物车中一个商品
+     * @param shoppingCartDTO
+     */
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        shoppingCart.setUserId(BaseContext.getCurrentId());
+        List<ShoppingCart> shoppingCartList = shoppingCartMapper.list(shoppingCart);
+        if (shoppingCartList != null && shoppingCartList.size() == 1) {
+            shoppingCart = shoppingCartList.get(0);
+            shoppingCart.setNumber(shoppingCart.getNumber() - 1);
+            if(shoppingCart.getNumber() == 0) {
+                shoppingCartMapper.deleteById(shoppingCart.getId());
+            }else  {
+                shoppingCartMapper.updateNumberById(shoppingCart);
+            }
+        }
+    }
+
 }
